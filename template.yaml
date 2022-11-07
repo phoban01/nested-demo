@@ -1,0 +1,71 @@
+apiVersion: config.ocm.software/v1alpha1
+kind: PipelineTemplate
+metadata:
+  name: pipeline-template
+  labels:
+    env: test
+parameters:
+  name: "{{ component }}-{{ resource }}"
+steps:
+- name: localize
+  template:
+    apiVersion: ocm.software/v1alpha1
+    kind: Localization
+    metadata:
+      name: "{{ parameters.name }}"
+    spec:
+      sourceRef:
+        kind: ComponentVersion
+        name: "{{ component }}"
+        resource: "{{ resource }}"
+      configRef:
+        kind: ComponentVersion
+        name: "{{ component }}"
+        resource:  ocm-config
+        path: localization # default
+      snapshotTemplate:
+          name: "{{ parameters.name }}-localized"
+- name: configure
+  template:
+    apiVersion: ocm.software/v1alpha1
+    kind: Configuration
+    metadata:
+      name: "{{ parameters.name }}"
+    spec:
+      sourceRef:
+        kind: Snapshot
+        name: my-snapshot
+        resource: "{{ parameters.name }}-localized"
+      configRef:
+        kind: ComponentVersion
+        name: "{{ component }}"
+        resource: ocm-config
+        path: configuration # default
+      values:
+         # populated from pipeline.values[resource]
+      snapshotTemplate:
+          name: "{{ parameters.name }}-config"
+- name: flux-source
+  template:
+    apiVersion: source.toolkit.fluxcd.io/v1beta2
+    kind: OCIRepository
+    metadata:
+      name: "{{ parameters.name }}"
+    spec:
+      interval: 10m0s
+      url: "oci://{{ registry.addr }}/{{ parameters.name }}-config"
+      ref:
+        tag: latest
+- name: flux-kustomization
+  template:
+    apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+    kind: Kustomization
+    metadata:
+      name: "{{ parameters.name }}"
+    spec:
+      interval: 10m0s
+      sourceRef:
+        kind: OCIRepository
+        name: "{{ component }}-{{ resource }}"
+      path: "./"
+      prune: true

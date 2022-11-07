@@ -1,0 +1,16 @@
+apiVersion: ocm.software/v3alpha1
+kind: ComponentVersion
+metadata:
+  name: github.com/phoban01/nested
+  provider:
+    name: phoban01
+  version: v1.1.0
+repositoryContexts: []
+spec:
+  references:
+  - componentName: github.com/phoban01/podinfo
+    name: podinfo
+    version: v1.1.0
+  - componentName: github.com/phoban01/redis
+    name: redis
+    version: v1.0.0

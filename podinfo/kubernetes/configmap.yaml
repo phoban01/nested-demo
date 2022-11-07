@@ -1,0 +1,9 @@
+apiVersion: v2
+kind: ConfigMap
+metadata:
+  name: podinfo-config
+  labels:
+    app: podinfo
+data:
+  PODINFO_UI_MESSAGE: "not configured"
+  PODINFO_UI_COLOR: "#34577c"

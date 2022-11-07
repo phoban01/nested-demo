@@ -1,0 +1,7 @@
+name: podinfo
+componentName: github.com/phoban01/podinfo
+version: v1.1.0
+---
+name: redis
+componentName: github.com/phoban01/redis
+version: v1.0.0

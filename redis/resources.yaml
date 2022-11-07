@@ -1,0 +1,14 @@
+name: image
+relation: external
+type: ociImage
+version: 7.0.5
+access:
+  type: ociArtefact
+  imageReference: docker.io/redis:7.0.5
+---
+name: manifests
+type: kustomize.ocm.fluxcd.io
+input:
+  type: dir
+  path: ./kubernetes
+  compress: true

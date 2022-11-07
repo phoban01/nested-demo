@@ -1,0 +1,33 @@
+apiVersion: ocm.software/v3alpha1
+kind: ComponentVersion
+metadata:
+  name: github.com/phoban01/podinfo
+  provider:
+    name: phoban01
+  version: v1.1.0
+repositoryContexts: []
+spec:
+  resources:
+  - access:
+      localReference: sha256.01f8577ca530285f4c9522c036cfb926f5340c354fa0e81aed04975bcd6b6a6f
+      mediaType: application/yaml
+      type: localBlob
+    name: config
+    relation: local
+    type: configdata.ocm.software
+    version: v1.1.0
+  - access:
+      imageReference: ghcr.io/stefanprodan/podinfo:6.2.0
+      type: ociArtefact
+    name: image
+    relation: external
+    type: ociImage
+    version: 6.2.0
+  - access:
+      localReference: sha256.f60ca6d6a9842117acacd86d0d248a85891fb1b6e33f8a743a40e8fd234302e0
+      mediaType: application/x-tgz
+      type: localBlob
+    name: manifests
+    relation: local
+    type: kustomize.ocm.fluxcd.io
+    version: v1.1.0

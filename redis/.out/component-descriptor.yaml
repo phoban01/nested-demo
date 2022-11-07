@@ -1,0 +1,25 @@
+apiVersion: ocm.software/v3alpha1
+kind: ComponentVersion
+metadata:
+  name: github.com/phoban01/redis
+  provider:
+    name: phoban01
+  version: v1.0.0
+repositoryContexts: []
+spec:
+  resources:
+  - access:
+      imageReference: docker.io/redis:7.0.5
+      type: ociArtefact
+    name: image
+    relation: external
+    type: ociImage
+    version: 7.0.5
+  - access:
+      localReference: sha256.d39e3d10d82753f265fef64eda4d945c13fda195f08ce7713cef1938ce795643
+      mediaType: application/x-tgz
+      type: localBlob
+    name: manifests
+    relation: local
+    type: kustomize.ocm.fluxcd.io
+    version: v1.0.0
